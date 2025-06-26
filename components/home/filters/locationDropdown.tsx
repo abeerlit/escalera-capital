@@ -43,7 +43,7 @@ export function LocationDropdown() {
         onClick={() => setOpen(!open)}
       >
         Location
-        <ChevronIcon className={`w-4 h-4 ${open ? "rotate-180" : ""}`} />
+        <ChevronIcon className={`w-3 h-3 ${open ? "rotate-180" : ""}`} />
       </button>
       {open && (
         <div className="absolute z-10 bg-white border border-gray-300 rounded shadow-lg w-full max-w-60">

@@ -44,7 +44,7 @@ export function Dropdown({
         onClick={() => setOpen(!open)}
       >
         {(Array.isArray(selected) ? title : selected) || title}
-        <ChevronIcon className={`w-4 h-4 ${open ? "rotate-180" : ""}`} />
+        <ChevronIcon className={`w-3 h-3 ${open ? "rotate-180" : ""}`} />
       </button>
       {open && (
         <ul className="absolute z-10 bottom-auto bg-white rounded border border-gray-300 shadow-lg w-fit">

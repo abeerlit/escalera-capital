@@ -11,6 +11,7 @@ export const MapComponent = () => {
   const mapRef = useRef<google.maps.Map | null>(null);
   const [showPanel, setShowPanel] = useState(false);
   const panelRef = useRef<HTMLDivElement | null>(null);
+  const [center] = useState({ lat: 32.7767, lng: -96.797 });
 
   // Sample markers (simulate density)
   const [markers] = useState([
@@ -24,24 +25,24 @@ export const MapComponent = () => {
     { lat: 29.9511, lng: -90.0715, title: 'New Orleans' },
     { lat: 35.4676, lng: -97.5164, title: 'Oklahoma City' },
     { lat: 39.7392, lng: -104.9903, title: 'Denver' },
-    // Add more for density
     { lat: 32.7555, lng: -97.3308, title: 'Fort Worth' },
     { lat: 29.3013, lng: -94.7977, title: 'Galveston' },
     { lat: 30.3322, lng: -81.6557, title: 'Jacksonville' },
     { lat: 31.9686, lng: -99.9018, title: 'Texas Center' },
     { lat: 34.7465, lng: -92.2896, title: 'Little Rock' },
     { lat: 32.7157, lng: -117.1611, title: 'San Diego' },
-    { lat: 29.7604, lng: -95.3698, title: 'Houston 2' },
-    { lat: 29.7604, lng: -95.3698, title: 'Houston 3' },
-    { lat: 29.7604, lng: -95.3698, title: 'Houston 4' },
-    { lat: 29.7604, lng: -95.3698, title: 'Houston 5' },
-    // ...add as many as needed for demo
+    { lat: 40.7128, lng: -74.0060, title: 'New York' },
+    { lat: 37.7749, lng: -122.4194, title: 'San Francisco' },
+    { lat: 48.8566, lng: 2.3522, title: 'Paris' },
+    { lat: 51.5074, lng: -0.1278, title: 'London' },
+    { lat: 40.4168, lng: -3.7038, title: 'Madrid' },
+    { lat: 34.0522, lng: -118.2437, title: 'Los Angeles' },
+    { lat: 35.6895, lng: 139.6917, title: 'Tokyo' }
   ]);
 
   const containerStyle = {
-    width: '70dvw',
-    height: 'calc(100vh - 115px)',
-    border: '2px solid #ccc',
+    width: '100%',
+    height: '100%',
   };
 
   // Custom red diamond marker icon with black border and shadow
@@ -49,9 +50,6 @@ export const MapComponent = () => {
     url: `data:image/svg+xml;utf-8,<svg width='32' height='40' viewBox='0 0 32 40' xmlns='http://www.w3.org/2000/svg'><polygon points='16,4 30,20 16,36 2,20' stroke='white' stroke-width='2' fill='red' /></svg>`,
     scaledSize: { width: 32, height: 40 } as google.maps.Size,
   };
-
-  // Map center (central US)
-  const center = { lat: 32.7767, lng: -96.797 };
 
   // Close panel on outside click
   useEffect(() => {
@@ -66,9 +64,16 @@ export const MapComponent = () => {
   }, [showPanel]);
 
   return (
-    <div className="relative w-fit">
+    <div className="relative w-[70dvw] h-full">
       {/* Map Container */}
-      <LoadScript googleMapsApiKey="AIzaSyBE8Ll3UulgRBHWCGyyTLghsROB3-ZZNPc">
+      <LoadScript
+        googleMapsApiKey="AIzaSyBE8Ll3UulgRBHWCGyyTLghsROB3-ZZNPc"
+        loadingElement={
+          <div className='flex items-center justify-center w-full h-full'>
+            <div className='w-16 h-16 border-x-2 border-black rounded-full animate-spin'></div>
+          </div>
+        }
+      >
         <GoogleMap
           mapContainerStyle={containerStyle}
           center={center}
@@ -76,13 +81,14 @@ export const MapComponent = () => {
           mapTypeId={mapType}
           onLoad={map => { mapRef.current = map; }}
           options={{
-            mapTypeControl: false, // We'll use our own control
-            fullscreenControl: false,
-            streetViewControl: false,
-            zoomControl: false,
-            rotateControl: false,
-            scaleControl: false,
-            panControl: false,
+            disableDefaultUI: true,  // We'll use our own control
+            clickableIcons: false,
+            minZoom: 2,
+            maxZoom: 99,
+            draggableCursor: 'default',
+            disableDoubleClickZoom: true,
+            keyboardShortcuts: false,
+            scrollwheel: false,
           }}
         >
           {/* Markers with custom icon */}
@@ -92,12 +98,12 @@ export const MapComponent = () => {
         </GoogleMap>
       </LoadScript>
       {/* Layer control (top right) */}
-      <div className="absolute top-4 right-4 z-20 flex flex-col items-end space-y-2">
+      <div className="absolute top-4 right-4 flex flex-col items-end space-y-2">
         {/* Zoom controls */}
         <div className="flex flex-col bg-white border border-gray-400 mb-2 w-10 overflow-hidden">
           <button
             className="w-full h-10 border-b border-gray-400 flex items-center justify-center hover:bg-gray-100 focus:outline-none"
-            onClick={() => setZoom(z => Math.min(z + 1, 21))}
+            onClick={() => setZoom(z => Math.min(z + 1, 99))}
             aria-label="Zoom in"
           >
             {/* Plus SVG */}
@@ -108,7 +114,7 @@ export const MapComponent = () => {
           </button>
           <button
             className="w-full h-10 flex items-center justify-center hover:bg-gray-100 focus:outline-none"
-            onClick={() => setZoom(z => Math.max(z - 1, 1))}
+            onClick={() => setZoom(z => Math.max(z - 1, 2))}
             aria-label="Zoom out"
           >
             {/* Minus SVG */}

@@ -65,7 +65,7 @@ export const AllFilters = () => {
         onClick={() => setOpen(!open)}
       >
         All Filters
-        <ChevronIcon className={`w-4 h-4 ${open ? "rotate-180" : ""}`} />
+        <ChevronIcon className={`w-3 h-3 ${open ? "rotate-180" : ""}`} />
       </button>
       {open && (
         <div className="absolute min-h-[300px] z-10 left-0 top-12 bg-white border border-gray-300 shadow-lg w-full flex flex-col">
