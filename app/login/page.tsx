@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Header } from "@/components/home/common/header";
+import { Header } from "@/components/common/header";
 import { Input } from "@/components/auth/input";
 
 export default function Login() {

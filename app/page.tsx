@@ -1,5 +1,5 @@
 "use client";
-import { Header } from "@/components/home/common/header";
+import { Header } from "@/components/common/header";
 import { FiltersComponent } from "@/components/home/filters/filtersComponent";
 import { MapComponent } from "@/components/home/map/landingMap";
 import { PropertyList } from "@/components/home/properties/propertyList";
