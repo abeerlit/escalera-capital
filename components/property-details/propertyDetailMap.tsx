@@ -45,7 +45,7 @@ export const PropertyDetailMap = () => {
     };
 
     return (
-        <div className="relative w-full h-full">
+        <div className="relative flex-1">
             <LoadScript googleMapsApiKey="AIzaSyBE8Ll3UulgRBHWCGyyTLghsROB3-ZZNPc">
                 <GoogleMap
                     mapContainerStyle={containerStyle}
