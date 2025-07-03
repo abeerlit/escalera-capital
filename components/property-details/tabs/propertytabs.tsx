@@ -1,6 +1,13 @@
 "use client";
 import React, { useState } from 'react'
 import { BuildingAndLot } from './components/building_and_lot';
+import { Owner } from './components/owner';
+import { Occupants } from './components/occupants';
+import { Sales } from './components/sales';
+import { Debt } from './components/debt';
+import { Tax } from './components/tax';
+import { Demographics } from './components/demographics';
+import { Permits } from './components/permits';
 
 const PROPERTY_TABS = {
     building_and_lot: "Building & Lot",
@@ -17,15 +24,15 @@ const PROPERTY_TABS = {
 
 const PROPERTY_TABS_COMPONENTS = {
     building_and_lot: BuildingAndLot,
-    owner: () =>  <div>Owner</div>,
-    occupants: () => <div>Occupants</div>,
-    sales: () => <div>Sales</div>,
-    debt: () => <div>Debt</div>,
-    tax: () => <div>Tax</div>,
-    demographics: () => <div>Demographics</div>,
-    notes: () => <div>Notes</div>,
-    permits: () => <div>Permits</div>,
-    reviews: () => <div>Reviews</div>,
+    owner: Owner,
+    occupants: Occupants,
+    sales: Sales,
+    debt: Debt,
+    tax: Tax,
+    demographics: Demographics,
+    notes: () => <>Notes</>,
+    permits: Permits,
+    reviews: () => <>Reviews</>,
 };
 
 export const PropertyTabs = () => {
