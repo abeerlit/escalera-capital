@@ -8,6 +8,8 @@ import { Debt } from './components/debt';
 import { Tax } from './components/tax';
 import { Demographics } from './components/demographics';
 import { Permits } from './components/permits';
+import { Notes } from './components/notes';
+import { Reviews } from './components/reviews';
 
 const PROPERTY_TABS = {
     building_and_lot: "Building & Lot",
@@ -30,9 +32,9 @@ const PROPERTY_TABS_COMPONENTS = {
     debt: Debt,
     tax: Tax,
     demographics: Demographics,
-    notes: () => <>Notes</>,
+    notes: Notes,
     permits: Permits,
-    reviews: () => <>Reviews</>,
+    reviews: Reviews,
 };
 
 export const PropertyTabs = () => {
@@ -60,7 +62,7 @@ export const PropertyTabs = () => {
             ] &&
                 React.createElement(
                     PROPERTY_TABS_COMPONENTS[
-                        currentTab as keyof typeof PROPERTY_TABS_COMPONENTS
+                    currentTab as keyof typeof PROPERTY_TABS_COMPONENTS
                     ]
                 )}
         </div>
