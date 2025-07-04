@@ -3,6 +3,7 @@ import { PropertyDetailMap } from "@/components/property-details/propertyDetailM
 import { PropertyHeiglights_Summry } from "@/components/property-details/propertyHeiglights_Summry";
 import { PropertyImages } from "@/components/property-details/propertyImages";
 import { PropertyTabs } from "@/components/property-details/tabs/propertytabs";
+import { PropertyDetailAnalytics } from "@/components/property-details/analytics";
 
 
 export default function PropertyDetails() {
@@ -17,6 +18,7 @@ export default function PropertyDetails() {
       </div>
       <PropertyHeiglights_Summry />
       <PropertyTabs />
+      <PropertyDetailAnalytics />
     </div>
   );
 };
