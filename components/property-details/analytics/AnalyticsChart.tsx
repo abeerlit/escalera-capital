@@ -8,6 +8,7 @@ import {
     Tooltip,
     Legend,
     Filler,
+    TooltipItem,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import { useMemo } from 'react';
@@ -27,99 +28,6 @@ type AnalyticsChartData = {
     forecastIndex?: number;
 };
 
-const chartDataMap: Record<string, AnalyticsChartData> = {
-    'vacancyAnalysis': {
-        labels: [
-            '2019', '2020', '2021', '2022', '2023', '2024', '2025', '2026', '2027', '2028', '2029',
-        ],
-        datasets: [
-            {
-                label: 'Subject',
-                data: [18, 18, 10, 0, 0, 0, 38, 60, 55, 45, 40],
-                color: '#F59E42',
-            },
-            {
-                label: 'Peers',
-                data: [30, 45, 8, 9, 10, 30, 60, 55, 50, 45, 40],
-                color: '#2B7FC3',
-            },
-            {
-                label: 'Northeast',
-                data: [7, 8, 8, 9, 10, 11, 12, 13, 13, 13, 13],
-                color: '#6CBF4A',
-            },
-            {
-                label: 'San Antonio',
-                data: [6, 7, 7, 8, 8, 9, 9, 9, 9, 9, 9],
-                color: '#F7E359',
-            },
-        ],
-        yLabel: '%',
-        yMax: 60,
-        yStep: 10,
-    },
-    'submarket': {
-        labels: [
-            '2019', '2020', '2021', '2022', '2023', '2024',
-        ],
-        datasets: [
-            {
-                label: 'Subject',
-                data: [18, 18, 10, 0, 0, 30],
-                color: '#F59E42',
-            },
-            {
-                label: 'Peers',
-                data: [0, 10, 20, 40, 50, 70],
-                color: '#2B7FC3',
-            },
-            {
-                label: 'Northeast',
-                data: [8, 10, 12, 13, 14, 15],
-                color: '#6CBF4A',
-            },
-            {
-                label: 'San Antonio',
-                data: [7, 8, 9, 10, 11, 12],
-                color: '#F7E359',
-            },
-        ],
-        yLabel: '%',
-        yMax: 80,
-        yStep: 10,
-    },
-    'rentalAnalysis': {
-        labels: [
-            '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024',
-        ],
-        datasets: [
-            {
-                label: 'Peers',
-                data: [65, 20, 5, 5, 5, 7, 8, 9, 7, 6],
-                color: '#2B7FC3',
-            },
-            {
-                label: 'Northeast',
-                data: [15, 12, 10, 9, 8, 8, 9, 10, 9, 8],
-                color: '#6CBF4A',
-            },
-            {
-                label: 'San Antonio',
-                data: [18, 15, 12, 10, 9, 8, 8, 9, 9, 8],
-                color: '#F7E359',
-            },
-        ],
-        yLabel: '%',
-        yMax: 70,
-        yStep: 10,
-    },
-};
-
-const getChartData = (selectedTab: string) => {
-    // Default to rentalAnalysis if not found
-    return chartDataMap[selectedTab] || chartDataMap['rentalAnalysis'];
-};
-
 export const AnalyticsChart = ({ selectedTab }: { selectedTab: string }) => {
     const chartData = useMemo(() => getChartData(selectedTab), [selectedTab]);
 
@@ -132,9 +40,9 @@ export const AnalyticsChart = ({ selectedTab }: { selectedTab: string }) => {
             borderColor: ds.color,
             backgroundColor: ds.color,
             borderWidth: 3,
-            pointRadius: 0,
-            pointHoverRadius: 0,
-            // tension: 0.2,
+            pointRadius: 3,
+            pointHoverRadius: 5,
+            tension: 0.1,
         })),
     };
 
@@ -151,6 +59,14 @@ export const AnalyticsChart = ({ selectedTab }: { selectedTab: string }) => {
                 },
                 width: 100,
                 height: 100,
+            },
+            tooltip: {
+                enabled: true,
+                callbacks: {
+                    label: function(context: TooltipItem<"line">) {
+                        return `${context.dataset.label}: ${context.parsed.y}%`;
+                    },
+                },
             },
         },
         scales: {
@@ -207,4 +123,98 @@ export const AnalyticsTable = ({ selectedTab }: { selectedTab: string }) => {
             </table>
         </div>
     );
+};
+
+
+const chartDataMap: Record<string, AnalyticsChartData> = {
+    'vacancyAnalysis': {
+        labels: [
+            '2019', '2020', '2021', '2022', '2023', '2024', '2025', '2026', '2027', '2028', '2029',
+        ],
+        datasets: [
+            {
+                label: 'Subject',
+                data: [18, 18, 30, 40, 30, 10, 38, 60, 55, 45, 40],
+                color: '#F59E42',
+            },
+            {
+                label: 'Peers',
+                data: [30, 45, 55, 35, 55, 45, 20, 55, 50, 45, 40],
+                color: '#2B7FC3',
+            },
+            {
+                label: 'Northeast',
+                data: [7, 8, 8, 9, 10, 11, 12, 13, 13, 13, 13],
+                color: '#6CBF4A',
+            },
+            {
+                label: 'San Antonio',
+                data: [26, 37, 47, 58, 28, 19, 29, 39, 49, 59, 29],
+                color: '#F7E359',
+            },
+        ],
+        yLabel: '%',
+        yMax: 60,
+        yStep: 10,
+    },
+    'submarket': {
+        labels: [
+            '2019', '2020', '2021', '2022', '2023', '2024',
+        ],
+        datasets: [
+            {
+                label: 'Subject',
+                data: [18, 18, 10, 30, 40, 50],
+                color: '#F59E42',
+            },
+            {
+                label: 'Peers',
+                data: [0, 10, 20, 40, 50, 70],
+                color: '#2B7FC3',
+            },
+            {
+                label: 'Northeast',
+                data: [8, 10, 12, 13, 14, 15],
+                color: '#6CBF4A',
+            },
+            {
+                label: 'San Antonio',
+                data: [7, 8, 9, 10, 11, 12],
+                color: '#F7E359',
+            },
+        ],
+        yLabel: '%',
+        yMax: 80,
+        yStep: 10,
+    },
+    'rentalAnalysis': {
+        labels: [
+            '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024',
+        ],
+        datasets: [
+            {
+                label: 'Peers',
+                data: [65, 20, 51, 35, 15, 57, 48, 39, 27, 16],
+                color: '#2B7FC3',
+            },
+            {
+                label: 'Northeast',
+                data: [15, 12, 10, 19, 28, 38, 49, 50, 49, 38],
+                color: '#6CBF4A',
+            },
+            {
+                label: 'San Antonio',
+                data: [18, 15, 12, 10, 39, 28, 18, 9, 9, 8],
+                color: '#F7E359',
+            },
+        ],
+        yLabel: '%',
+        yMax: 70,
+        yStep: 10,
+    },
+};
+
+const getChartData = (selectedTab: string) => {
+    // Default to rentalAnalysis if not found
+    return chartDataMap[selectedTab] || chartDataMap['rentalAnalysis'];
 };

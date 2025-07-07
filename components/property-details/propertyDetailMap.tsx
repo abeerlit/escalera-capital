@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { GoogleMap, LoadScript, Marker, InfoWindow } from '@react-google-maps/api';
+import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 
 const DUMMY_DATA = {
     property: { lat: 32.7767, lng: -96.797, title: 'Subject Property' },
@@ -25,9 +25,8 @@ const containerStyle = {
 export const PropertyDetailMap = () => {
     const [radiusCount, setRadiusCount] = useState(5);
     const [radius, setRadius] = useState(20 - radiusCount + 1);
-    const [selectedTraffic, setSelectedTraffic] = useState<number | null>(null);
-    const center = DUMMY_DATA.property;
 
+    const center = DUMMY_DATA.property;
 
     // create an object with the radius count as the key and the value as the radius minus radiusCount from 20 then start from that number for creating object like this {15: 0, 16: 1, 17: 2, 18: 3}
     // the first key should be 20 - radiusCount + 1 and value should be index of the array it should be dynamic
@@ -38,10 +37,10 @@ export const PropertyDetailMap = () => {
 
     // Custom marker icons (use string for icon, omit scaledSize for now for compatibility)
     const icons = {
-        property: `data:image/svg+xml;utf-8,<svg width='32' height='40' viewBox='0 0 32 40' xmlns='http://www.w3.org/2000/svg'><circle cx='16' cy='20' r='12' fill='blue' stroke='white' stroke-width='2'/></svg>`,
-        comp: `data:image/svg+xml;utf-8,<svg width='32' height='40' viewBox='0 0 32 40' xmlns='http://www.w3.org/2000/svg'><circle cx='16' cy='20' r='12' fill='red' stroke='white' stroke-width='2'/></svg>`,
-        permit: `data:image/svg+xml;utf-8,<svg width='32' height='40' viewBox='0 0 32 40' xmlns='http://www.w3.org/2000/svg'><rect x='8' y='12' width='16' height='16' fill='orange' stroke='white' stroke-width='2'/></svg>`,
-        traffic: `data:image/svg+xml;utf-8,<svg width='40' height='40' xmlns='http://www.w3.org/2000/svg'><circle cx='20' cy='20' r='16' fill='green' stroke='white' stroke-width='3'/></svg>`
+        property: `data:image/svg+xml;utf-8,<svg width='32' height='40' viewBox='0 0 32 40' xmlns='http://www.w3.org/2000/svg'><circle cx='16' cy='20' r='12' fill='blue' stroke='white' stroke-width=''/></svg>`,
+        comp: `data:image/svg+xml;utf-8,<svg width='32' height='40' viewBox='0 0 32 40' xmlns='http://www.w3.org/2000/svg'><circle cx='16' cy='20' r='12' fill='red' stroke='white' stroke-width=''/></svg>`,
+        permit: `data:image/svg+xml;utf-8,<svg width='32' height='40' viewBox='0 0 32 40' xmlns='http://www.w3.org/2000/svg'><circle cx='16' cy='20' r='12' fill='orange' stroke='white' stroke-width=''/></svg>`,
+        traffic: `data:image/svg+xml;utf-8,<svg width='40' height='40' xmlns='http://www.w3.org/2000/svg'><circle cx='20' cy='20' r='12' fill='green' stroke='white' stroke-width=''/></svg>`
     };
 
     return (
@@ -56,44 +55,32 @@ export const PropertyDetailMap = () => {
                         minZoom: 1,
                         maxZoom: 20,
                         draggableCursor: 'default',
+                        clickableIcons: false,
+                        disableDoubleClickZoom: true,
+                        keyboardShortcuts: false,
+                        scrollwheel: false,
                     }}
                 >
                     {/* Property Pin */}
-                    <Marker position={DUMMY_DATA.property} icon={icons.property} title="Property" onClick={() => alert("Property")} />
+                    <Marker position={DUMMY_DATA.property} icon={icons.property} title="Property" onClick={() => alert(DUMMY_DATA.property.title)} />
                     {/* Comps Pins */}
                     {DUMMY_DATA.comps.map((comp, idx) => (
-                        <Marker key={idx} position={comp} icon={icons.comp} title={comp.title} onClick={() => setSelectedTraffic(idx)} />
+                        <Marker key={idx} position={comp} icon={icons.comp} title={comp.title} onClick={() => alert(comp.title)} />
                     ))}
                     {/* Permits Pins */}
                     {DUMMY_DATA.permits.map((permit, idx) => (
-                        <Marker key={idx} position={permit} icon={icons.permit} title={permit.title} onClick={() => setSelectedTraffic(idx)} />
+                        <Marker key={idx} position={permit} icon={icons.permit} title={permit.title} onClick={() => alert(permit.title)} />
                     ))}
                     {/* Traffic Counts Pins (show value) */}
                     {DUMMY_DATA.trafficCounts.map((tc, idx) => (
                         <Marker
                             key={idx}
                             position={tc}
-                            label={{ text: tc.value.toString(), color: 'white', fontWeight: 'bold', fontSize: '14px' }}
+                            label={{ text: tc.value.toString(), color: 'white', fontWeight: 'bold', fontSize: '10px' }}
                             icon={icons.traffic}
-                            onClick={() => setSelectedTraffic(idx)}
+                            onClick={() => alert(`${tc.value} traffic count`)}
                         />
                     ))}
-                    {/* InfoWindow for traffic count history */}
-                    {selectedTraffic !== null && (
-                        <InfoWindow
-                            position={DUMMY_DATA.trafficCounts[selectedTraffic]}
-                            onCloseClick={() => setSelectedTraffic(null)}
-                        >
-                            <div>
-                                <div className="font-bold mb-1">Traffic Count History</div>
-                                <ul className="list-disc ml-4">
-                                    {DUMMY_DATA.trafficCounts[selectedTraffic].history.map((h, i) => (
-                                        <li key={i}>{h}</li>
-                                    ))}
-                                </ul>
-                            </div>
-                        </InfoWindow>
-                    )}
                 </GoogleMap>
             </LoadScript>
             {/* Controls */}
